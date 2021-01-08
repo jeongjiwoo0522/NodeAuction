@@ -1,0 +1,42 @@
+{
+  "name": "nodeauction",
+  "version": "1.0.0",
+  "description": "Node Auction system with typeorm",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeongjiwoo0522/NodeAuction.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jeongjiwoo0522/NodeAuction/issues"
+  },
+  "homepage": "https://github.com/jeongjiwoo0522/NodeAuction#readme",
+  "devDependencies": {
+    "@types/body-parser": "^1.19.0",
+    "@types/cookie-parser": "^1.4.2",
+    "@types/express": "^4.17.9",
+    "@types/express-session": "^1.17.3",
+    "@types/morgan": "^1.9.2",
+    "@types/multer": "^1.4.5",
+    "@types/node": "^14.14.20",
+    "nodemon": "^2.0.7",
+    "pm2": "^4.5.1",
+    "ts-node": "^9.1.1"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.2",
+    "nunjucks": "^3.2.2",
+    "typeorm": "^0.2.29"
+  }
+}
