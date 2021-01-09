@@ -1,10 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity } from "typeorm";
+import { PrimaryKeyId } from "./default";
 
 @Entity("user")
-class User {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+class User extends PrimaryKeyId {
   @Column({ type: "varchar", length: 40, unique: true })
   email: string;
 

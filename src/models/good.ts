@@ -1,10 +1,8 @@
-import { Column, Entity, PrimaryColumn } from "typeorm";
+import { Column, Entity } from "typeorm";
+import { PrimaryKeyId } from "./default";
 
 @Entity("good")
-class Good {
-  @PrimaryColumn()
-  id: number;
-
+class Good extends PrimaryKeyId{
   @Column({ type: "varchar", length: 40 })
   name: string;
 

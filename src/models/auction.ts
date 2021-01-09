@@ -1,10 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity } from "typeorm";
+import { PrimaryKeyId } from "./default";
 
 @Entity("auction")
-class Auction {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+class Auction extends PrimaryKeyId {
   @Column({ default: 0 })
   bid: number;
 
