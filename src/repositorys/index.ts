@@ -1,5 +1,5 @@
-import { UserRepository } from "./userRepository";
+import { UserQuery } from "./userRepository";
 
 export {
-  UserRepository
+  UserQuery
 }

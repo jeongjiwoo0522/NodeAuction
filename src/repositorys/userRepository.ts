@@ -8,6 +8,11 @@ class UserRepository extends Repository<User> {
       where: { email: email }
     });
   }
+  public findById(id: number): Promise<User> {
+    return this.findOne({
+      where: { id: id },
+    });
+  }
 }
 
 const UserQuery: UserRepository = getCustomRepository(UserRepository);
