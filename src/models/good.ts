@@ -1,5 +1,7 @@
-import { Column, Entity } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
+import { Auction } from "./auction";
 import { PrimaryKeyId } from "./default";
+import { User } from "./user";
 
 @Entity("good")
 class Good extends PrimaryKeyId{
@@ -11,6 +13,15 @@ class Good extends PrimaryKeyId{
 
   @Column({ default: 0 })
   price: number;
+
+  @OneToMany(type => Auction, auction => auction.good)
+  auctions: Auction[];
+
+  @ManyToOne(type => User, user => user.auctioned_good)
+  owner: User;
+
+  @ManyToOne(type => User, user => user.solded_good)
+  sold: User;
 }
 
 export { Good }
