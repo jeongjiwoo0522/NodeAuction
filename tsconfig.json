@@ -9,6 +9,7 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "removeComments": true,
-    "strictNullChecks": false
+    "strictNullChecks": false,
+    "outDir": "./dist"
   }
 }
