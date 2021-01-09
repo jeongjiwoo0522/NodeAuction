@@ -2,8 +2,7 @@ import passport from "passport";
 import { Strategy } from "passport-local";
 import bcrypt from "bcrypt";  
 import { User } from "../models";
-import { UserRepository } from "../repositorys";
-import { getCustomRepository } from "typeorm";
+import { UserQuery } from "../repositorys";
 
 interface loginCallback { 
   (err: Error | null, user?: User | null, info?: { message: string }): void;
@@ -15,8 +14,7 @@ const localStrategy = () => {
     passwordField: "password",
   }, async (email: string, password: string, callback: loginCallback) => {
     try {
-      const userRepo: UserRepository = getCustomRepository(UserRepository);
-      const exUser: User = await userRepo.findOne({ where: { email: email }});
+      const exUser: User = await UserQuery.findByEmail(email);
       if(exUser) {
         const result: boolean = await bcrypt.compare(password, exUser.password);
         if(result) {
