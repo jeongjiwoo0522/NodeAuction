@@ -1,8 +1,7 @@
 import passport from "passport";
 import jwt from "jsonwebtoken";
-import { localStrategy } from "./localStrategy";
 import { User } from "../models";
-import { UserQuery } from "../repositorys";
+import { UserRepository } from "../repositorys";
 
 interface PassportUser extends Express.User {
   [key: string]: any;
@@ -23,7 +22,7 @@ const passportConfig = () => {
   passport.deserializeUser(async (token: string, callback: Callback) => {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET) as { user_id: number };
-      const user: User = await UserQuery.findById(decoded.user_id);
+      const user: User = await UserRepository.getQuery().findById(decoded.user_id);
       callback(null, user);
     } catch(err) {
       console.error(err);
