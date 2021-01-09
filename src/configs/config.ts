@@ -13,4 +13,6 @@ export default {
   dbPassword: env.DATABASE_PASSWORD,
   dbName: env.DATABASE_NAME,
   jwtSecret: env.JWT_SECRET,
+  cookieSecret: env.COOKIE_SECRET,
+  nodeEnv: env.NODE_ENV,
 }

@@ -1,4 +1,4 @@
-import { BusinessLogic } from "../interfaces/BusinessLogic";
+import { BusinessLogic } from "../types/BusinessLogic";
 
 const isLoggedIn: BusinessLogic = (req, res, next) => {
   if(req.isAuthenticated()) {
