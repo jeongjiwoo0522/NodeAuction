@@ -15,3 +15,5 @@ const isNotLoggedIn: BusinessLogic = (req, res, next) => {
     res.redirect("/");
   }
 }
+
+export { isLoggedIn, isNotLoggedIn }
