@@ -1,20 +1,23 @@
 import { EntityRepository, getCustomRepository, Repository } from "typeorm";
 import { User } from "../models";
 
-@EntityRepository()
+@EntityRepository(User)
 class UserRepository extends Repository<User> {
+  static getQuery() {
+    return getCustomRepository(UserRepository);
+  }
   public findByEmail(email: string): Promise<User> {
-    return this.findOne({
-      where: { email: email }
-    });
+    return this
+    .createQueryBuilder()
+    .where("user.email = :email", { email: email })
+    .getOne();
   }
   public findById(id: number): Promise<User> {
-    return this.findOne({
-      where: { id: id },
-    });
+    return this
+    .createQueryBuilder()
+    .where("user.id = :id", { id: id })
+    .getOne();
   }
 }
 
-const UserQuery: UserRepository = getCustomRepository(UserRepository);
-
-export { UserQuery }
+export { UserRepository }
