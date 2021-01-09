@@ -14,6 +14,8 @@ import { connectionOptions } from "./configs/connectionOptions";
 import { passportConfig } from "./passport";
 import { HttpError } from "./types/HttpError";
 
+import authRouter from "./routes/auth";
+
 const app = express();
 passportConfig();
 app.set("port", config.port);
@@ -47,6 +49,8 @@ app.use(cookieParser(config.cookieSecret));
 app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use("/auth", authRouter);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   const err: Error = new HttpError(404, `${req.method}, ${req.url} 라우터가 없습니다.`);

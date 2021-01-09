@@ -18,6 +18,14 @@ class UserRepository extends Repository<User> {
     .where("user.id = :id", { id: id })
     .getOne();
   }
+  public createNewUser(email: string, nick: string, password: string, money: number): Promise<User> {
+    const newUser: User = new User();
+    newUser.email = email,
+    newUser.nick = nick,
+    newUser.password = password,
+    newUser.money = money;
+    return this.manager.save(newUser);
+  }
 }
 
 export { UserRepository }
