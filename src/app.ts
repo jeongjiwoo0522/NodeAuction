@@ -14,6 +14,7 @@ import { connectionOptions } from "./configs/connectionOptions";
 import { passportConfig } from "./passport";
 import { HttpError } from "./types/HttpError";
 
+import indexRouter from "./routes/index";
 import authRouter from "./routes/auth";
 
 const app = express();
@@ -50,6 +51,7 @@ app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use("/", indexRouter);
 app.use("/auth", authRouter);
 
 app.use((req: Request, res: Response, next: NextFunction) => {

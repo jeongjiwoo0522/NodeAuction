@@ -12,6 +12,14 @@ class GoodRepository extends Repository<Good> {
     .where("good.soldId = :soldId", { soldId: soldId })
     .getMany();
   }
+  public createNewGood(ownerId: number, name: string, img: string, price: number): Promise<Good> {
+    const newGood: Good = new Good();
+    newGood.owner.id = ownerId;
+    newGood.name = name;
+    newGood.img = img;
+    newGood.price = price;
+    return this.manager.save(newGood);
+  }
 }
 
 export { GoodRepository }
