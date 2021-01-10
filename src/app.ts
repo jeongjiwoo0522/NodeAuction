@@ -21,7 +21,7 @@ const app = express();
 passportConfig();
 app.set("port", config.port);
 app.set("view engine", "html");
-nunjucks.configure("views", {
+nunjucks.configure("src/views", {
   express: app,
   watch: true,
 });
