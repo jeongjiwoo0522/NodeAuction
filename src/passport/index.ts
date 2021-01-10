@@ -2,6 +2,7 @@ import passport from "passport";
 import jwt from "jsonwebtoken";
 import { User } from "../models";
 import { UserRepository } from "../repositorys";
+import { localStrategy } from "./localStrategy";
 
 interface PassportUser extends Express.User {
   [key: string]: any;
@@ -28,7 +29,8 @@ const passportConfig = () => {
       console.error(err);
       callback(err);
     }
-  })
+  });
+  localStrategy();
 }
 
 export { passportConfig }
