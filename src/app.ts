@@ -7,7 +7,6 @@ import passport from "passport";
 import nunjucks from "nunjucks";
 import dotenv from "dotenv";
 import config from "./configs/config";
-import ServerSentEvent from "express-sse-ts";
 
 dotenv.config();
 import { createConnection } from "typeorm";
@@ -31,7 +30,6 @@ createConnection(connectionOptions)
   console.log("DB connection success");
 })
 .catch(console.error);
-const sse = new ServerSentEvent();
 
 const sessionMiddleware = session({
   secret: config.cookieSecret,
@@ -53,7 +51,6 @@ app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get("/sse", sse.init);
 app.use("/", indexRouter);
 app.use("/auth", authRouter);
 
@@ -68,10 +65,6 @@ app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
   res.status(err.status || 500);
   res.render("error");
 });
-
-setInterval(() => {
-  sse.send(Date.now().toString());
-}, 1000);
 
 app.listen(app.get("port"), () => {
   console.log("server on ", app.get("port"));
