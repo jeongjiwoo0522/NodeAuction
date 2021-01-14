@@ -12,7 +12,7 @@ const joinUser: BusinessLogic = async (req, res, next) => {
   }
   const hash = await bcrypt.hash(password, 12);
   await UserRepository.getQuery()
-  .createNewUser(email, nick, hash, money);
+  .createNewUser({email, nick, password: hash, money});
   return res.redirect("/");
 }
 

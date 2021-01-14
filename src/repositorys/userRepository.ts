@@ -1,5 +1,6 @@
 import { EntityRepository, getCustomRepository, Repository } from "typeorm";
 import { User } from "../models";
+import { CreateUserDto } from "./dtos/create-user.dto";
 
 @EntityRepository(User)
 class UserRepository extends Repository<User> {
@@ -18,12 +19,12 @@ class UserRepository extends Repository<User> {
     .where("user.id = :id", { id: id })
     .getOne();
   }
-  public createNewUser(email: string, nick: string, password: string, money: number): Promise<User> {
+  public createNewUser(userDto: CreateUserDto): Promise<User> {
     const newUser: User = new User();
-    newUser.email = email,
-    newUser.nick = nick,
-    newUser.password = password,
-    newUser.money = money;
+    newUser.email = userDto.email,
+    newUser.nick = userDto.nick,
+    newUser.password = userDto.password,
+    newUser.money = userDto.money;
     return this.manager.save(newUser);
   }
 }
