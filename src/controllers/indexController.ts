@@ -1,6 +1,7 @@
 import { Good } from "../models";
 import { GoodRepository } from "../repositorys";
 import { BusinessLogic } from "../types/BusinessLogic";
+import { CreateGoodDto } from './../repositorys/dtos/create-good.dto';
 
 const renderMainPage: BusinessLogic = async (req, res, next) => {
   const goods: Good[] = await GoodRepository.getQuery().findAllBySoldId(null);
@@ -23,9 +24,9 @@ const renderGoodPage: BusinessLogic = async (req, res, next) => {
 }
 
 const createGood: BusinessLogic = async (req, res, next) => {
-  const { name, price } = req.body as { name: string, price: number };
+  const { name, price } = req.body as CreateGoodDto;
   await GoodRepository.getQuery()
-  .createNewGood(req.user.id, name, req.file.filename, price);
+  .createNewGood({ ownerId: req.user.id, name, img: req.file.filename, price});
   res.redirect("/");
 }
 

@@ -3,9 +3,10 @@ import bcrypt from "bcrypt";
 import { BusinessLogic } from "../types/BusinessLogic";
 import { User } from "../models";
 import { UserRepository } from "../repositorys";
+import { CreateUserDto } from './../repositorys/dtos/create-user.dto';
 
 const joinUser: BusinessLogic = async (req, res, next) => {
-  const { email, nick, password, money } = req.body as { email: string, nick: string, password: string, money: number };
+  const { email, nick, password, money } = req.body as CreateUserDto;
   const exUser: User = await UserRepository.getQuery().findByEmail(email);
   if(exUser) {
     return res.redirect("/join?joinError=이미 가입된 이메일입니다.");
