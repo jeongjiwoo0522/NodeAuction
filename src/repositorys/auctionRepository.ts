@@ -28,6 +28,17 @@ class AuctionRepository extends Repository<Auction> {
     auction.good = good;
     return this.manager.save(auction);
   }
+
+  public findSoldedAuction(goodId: number): Promise<Auction> {
+    return this.createQueryBuilder("auction")
+    .leftJoin("auction.user", "User")
+    .select("auction.bid")
+    .addSelect("User.id")
+    .where("auction.goodId = :goodId")
+    .setParameter("goodId", goodId)
+    .orderBy("auction.bid", "DESC")
+    .getOne();
+  }
 }
 
 export { AuctionRepository }

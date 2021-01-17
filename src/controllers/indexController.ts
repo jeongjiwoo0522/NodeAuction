@@ -1,8 +1,8 @@
+import schedule from "node-schedule";
 import { Auction, Good, User } from "../models";
 import { AuctionRepository, GoodRepository, UserRepository } from "../repositorys";
 import { PostGoodBidDto } from "../repositorys/dtos/post-goodBid.dto";
 import { BusinessLogic } from "../types/BusinessLogic";
-import { HttpError } from "../types/HttpError";
 import { CreateGoodDto } from './../repositorys/dtos/create-good.dto';
 
 const renderMainPage: BusinessLogic = async (req, res, next) => {
@@ -27,8 +27,15 @@ const renderGoodPage: BusinessLogic = async (req, res, next) => {
 
 const createGood: BusinessLogic = async (req, res, next) => {
   const { name, price } = req.body as CreateGoodDto;
-  await GoodRepository.getQuery()
+  const good: Good = await GoodRepository.getQuery()
   .createNewGood({ ownerId: req.user.id, name, img: req.file.filename, price});
+  const end = new Date();
+  end.setDate(end.getDate() + 1);
+  schedule.scheduleJob(end, async () => {
+    const success: Auction = await AuctionRepository.getQuery().findSoldedAuction(good.id);
+    await GoodRepository.getQuery().updateGoodSolder(success.user.id, good.id);
+    await UserRepository.getQuery().updateUserBid(success.bid, success.user.id);
+  });
   res.redirect("/");
 }
 

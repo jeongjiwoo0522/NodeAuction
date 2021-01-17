@@ -48,6 +48,24 @@ class GoodRepository extends Repository<Good> {
     .orderBy("Auction.bid", "DESC")
     .getOne();
   }
+
+  public async updateGoodSolder(soldId: number, goodId: number) {
+    this.createQueryBuilder("good")
+    .update()
+    .set({ 
+      sold: await UserRepository.getQuery().findById(soldId),
+     })
+     .where("good.id = :id")
+     .setParameter("id", goodId)
+     .execute();
+  }
+
+  public findUnknownSolderGoods(yesterday: Date): Promise<Good[]> {
+    return this.createQueryBuilder("good")
+    .where("good.soldId = NULL")
+    .andWhere("good.createdAt <= :yesterday", { yesterday })
+    .getMany()
+  }
 }
 
 export { GoodRepository }
