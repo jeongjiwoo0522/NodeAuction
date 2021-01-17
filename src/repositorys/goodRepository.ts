@@ -10,6 +10,13 @@ class GoodRepository extends Repository<Good> {
     return getCustomRepository(GoodRepository);
   }
 
+  public findById(goodId: string): Promise<Good> {
+    return this.createQueryBuilder("good")
+    .where("good.id = :id")
+    .setParameter("id", +goodId)
+    .getOne();
+  }
+
   public findAllBySoldId(soldId: number | null): Promise<Good[]> {
     return this
     .createQueryBuilder()
@@ -31,6 +38,15 @@ class GoodRepository extends Repository<Good> {
     .leftJoinAndSelect("good.owner", "Owner")
     .where("good.id = :id")
     .setParameter("id", +goodId)
+    .getOne();
+  }
+
+  public findByIdWithAuction(goodId: string): Promise<Good> {
+    return this.createQueryBuilder("good")
+    .leftJoinAndSelect("good.auction", "Auction")
+    .where("good.id = :id")
+    .setParameter("id", +goodId)
+    .orderBy("Auction.bid", "DESC")
     .getOne();
   }
 }

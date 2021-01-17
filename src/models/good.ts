@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany } from "typeorm";
 import { Auction } from "./auction";
 import { PrimaryKeyId } from "./default";
 import { User } from "./user";
@@ -22,6 +22,9 @@ class Good extends PrimaryKeyId{
 
   @ManyToOne(type => User, user => user.solded_good)
   sold: User;
+
+  @CreateDateColumn({ type: "datetime" })
+  createdAt: Date;
 }
 
 export { Good }

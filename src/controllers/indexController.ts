@@ -1,6 +1,8 @@
-import { Good } from "../models";
-import { AuctionRepository, GoodRepository } from "../repositorys";
+import { Auction, Good, User } from "../models";
+import { AuctionRepository, GoodRepository, UserRepository } from "../repositorys";
+import { PostGoodBidDto } from "../repositorys/dtos/post-goodBid.dto";
 import { BusinessLogic } from "../types/BusinessLogic";
+import { HttpError } from "../types/HttpError";
 import { CreateGoodDto } from './../repositorys/dtos/create-good.dto';
 
 const renderMainPage: BusinessLogic = async (req, res, next) => {
@@ -42,10 +44,30 @@ const renderAuctionPage: BusinessLogic = async (req, res, next) => {
   });
 }
 
+const postGoodBid: BusinessLogic = async (req, res, next) => {
+  const { bid, msg } = req.body as PostGoodBidDto;
+  const good: Good = await GoodRepository.getQuery().findByIdWithAuction(req.params.id);
+  if(good.price >= bid) {
+    throw new HttpError(403, "시작 가격보다 높게 입찰해야 합니다.");
+  } 
+  if(new Date(good.createdAt).valueOf() + (24*60*60*1000) < new Date().valueOf()) {
+    throw new HttpError(403, "경매가 이미 종료되었습니다");
+  }
+  const user: User = await UserRepository.getQuery().findById(req.user.id);
+  const result: Auction = await AuctionRepository.getQuery().createNewAuction(bid, msg, user, good);
+  req.app.get("io").to(req.params.id).emit("bid", {
+    bid: result.bid,
+    msg: result.msg,
+    nick: user.nick,
+  });
+  return res.send("ok");
+}
+
 export {
   renderMainPage,
   renderJoinPage,
   renderGoodPage,
   createGood,
-  renderAuctionPage
+  renderAuctionPage,
+  postGoodBid
 }

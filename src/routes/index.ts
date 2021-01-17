@@ -13,6 +13,7 @@ const renderJoinPageHandler: BusinessLogic = errorHandler(indexController.render
 const renderGoodPageHandler: BusinessLogic = errorHandler(indexController.renderGoodPage);
 const auctionGoodHandler: BusinessLogic = errorHandler(indexController.createGood);
 const renderAuctionPageHandler: BusinessLogic = errorHandler(indexController.renderAuctionPage);
+const postGoodBidHandler: BusinessLogic = errorHandler(indexController.postGoodBid);
 
 router.use((req: Request, res: Response, next: NextFunction) => {
   res.locals.user = req.user;
@@ -24,5 +25,6 @@ router.get("/join", isNotLoggedIn, renderJoinPageHandler);
 router.get("/good", isLoggedIn, renderGoodPageHandler);
 router.post("/good", isLoggedIn, upload.single("img"), auctionGoodHandler);
 router.get("/good/:id", isLoggedIn, renderAuctionPageHandler);
+router.post("/good/:id/bid", isLoggedIn, postGoodBidHandler);
 
 export default router;
