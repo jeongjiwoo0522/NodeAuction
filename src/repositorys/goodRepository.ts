@@ -5,15 +5,18 @@ import { UserRepository } from "./userRepository";
 
 @EntityRepository(Good)
 class GoodRepository extends Repository<Good> {
+
   static getQuery() {
     return getCustomRepository(GoodRepository);
   }
+
   public findAllBySoldId(soldId: number | null): Promise<Good[]> {
     return this
     .createQueryBuilder()
     .where("good.soldId = :soldId", { soldId: soldId })
     .getMany();
   }
+
   public async createNewGood(goodDto: CreateGoodDto): Promise<Good> {
     const newGood: Good = new Good();
     newGood.owner = await UserRepository.getQuery().findById(goodDto.ownerId);
@@ -21,6 +24,14 @@ class GoodRepository extends Repository<Good> {
     newGood.img = goodDto.img;
     newGood.price = goodDto.price;
     return this.manager.save(newGood);
+  }
+
+  public findByIdIncludeUser(goodId: string): Promise<Good> {
+    return this.createQueryBuilder("good")
+    .leftJoinAndSelect("good.owner", "Owner")
+    .where("good.id = :id")
+    .setParameter("id", +goodId)
+    .getOne();
   }
 }
 

@@ -1,5 +1,5 @@
 import { Good } from "../models";
-import { GoodRepository } from "../repositorys";
+import { AuctionRepository, GoodRepository } from "../repositorys";
 import { BusinessLogic } from "../types/BusinessLogic";
 import { CreateGoodDto } from './../repositorys/dtos/create-good.dto';
 
@@ -30,9 +30,22 @@ const createGood: BusinessLogic = async (req, res, next) => {
   res.redirect("/");
 }
 
+const renderAuctionPage: BusinessLogic = async (req, res, next) => {
+  const [good, auction] = await Promise.all([
+    GoodRepository.getQuery().findByIdIncludeUser(req.params.id),
+    AuctionRepository.getQuery().findAllWithUserOrderbyBid(req.params.id),
+  ]);
+  res.render("auction", {
+    title: `${good.name} - NodeAuction`,
+    good,
+    auction,
+  });
+}
+
 export {
   renderMainPage,
   renderJoinPage,
   renderGoodPage,
   createGood,
+  renderAuctionPage
 }
