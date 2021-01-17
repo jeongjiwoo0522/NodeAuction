@@ -16,12 +16,14 @@ import { HttpError } from "./types/HttpError";
 
 import webSocket from "./socket";
 import sse from "./sse";
+import checkAuction from "./checkAuction";
 import indexRouter from "./routes/index";
 import authRouter from "./routes/auth";
 import { Server } from "http";
 
 const app = express();
 passportConfig();
+checkAuction();
 app.set("port", config.port);
 app.set("view engine", "html");
 nunjucks.configure("src/views", {
