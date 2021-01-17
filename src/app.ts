@@ -14,8 +14,11 @@ import { connectionOptions } from "./configs/connectionOptions";
 import { passportConfig } from "./passport";
 import { HttpError } from "./types/HttpError";
 
+import webSocket from "./socket";
+import sse from "./sse";
 import indexRouter from "./routes/index";
 import authRouter from "./routes/auth";
+import { Server } from "http";
 
 const app = express();
 passportConfig();
@@ -66,6 +69,9 @@ app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
   res.render("error");
 });
 
-app.listen(app.get("port"), () => {
+const server: Server = app.listen(app.get("port"), () => {
   console.log("server on ", app.get("port"));
 });
+
+webSocket(server, app);
+sse(server);
