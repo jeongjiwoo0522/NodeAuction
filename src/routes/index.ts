@@ -13,7 +13,7 @@ const renderJoinPageHandler: BusinessLogic = errorHandler(indexController.render
 const renderGoodPageHandler: BusinessLogic = errorHandler(indexController.renderGoodPage);
 const auctionGoodHandler: BusinessLogic = errorHandler(indexController.createGood);
 const renderAuctionPageHandler: BusinessLogic = errorHandler(indexController.renderAuctionPage);
-const postGoodBidHandler: BusinessLogic = errorHandler(indexController.postGoodBid);
+const renderSoldListPageHandler: BusinessLogic = errorHandler(indexController.rendSoldList);
 
 router.use((req: Request, res: Response, next: NextFunction) => {
   res.locals.user = req.user;
@@ -21,6 +21,7 @@ router.use((req: Request, res: Response, next: NextFunction) => {
 }); 
 
 router.get("/", renderMainPageHandler);
+router.get("/list", renderSoldListPageHandler);
 router.get("/join", isNotLoggedIn, renderJoinPageHandler);
 router.get("/good", isLoggedIn, renderGoodPageHandler);
 router.post("/good", isLoggedIn, upload.single("img"), auctionGoodHandler);

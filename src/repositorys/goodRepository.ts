@@ -66,6 +66,15 @@ class GoodRepository extends Repository<Good> {
     .andWhere("good.createdAt <= :yesterday", { yesterday })
     .getMany()
   }
+
+  public findSoldGoods(soldId: string): Promise<Good[]> {
+    return this.createQueryBuilder("good")
+    .leftJoinAndSelect("good.auctions", "Auction")
+    .where("good.soldId = :soldId")
+    .setParameter("soldId", soldId)
+    .orderBy("Auction.bid", "DESC")
+    .getMany();
+  }
 }
 
 export { GoodRepository }

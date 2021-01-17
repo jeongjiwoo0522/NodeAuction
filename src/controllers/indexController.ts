@@ -73,11 +73,17 @@ const postGoodBid: BusinessLogic = async (req, res, next) => {
   return res.send("ok");
 }
 
+const rendSoldList: BusinessLogic = async (req, res, next) => {
+  const goods: Good[] = await GoodRepository.getQuery().findSoldGoods(req.user.id)
+  res.render("list", { title: "낙찰 목록 - NodeAuction", goods });
+}
+
 export {
   renderMainPage,
   renderJoinPage,
   renderGoodPage,
   createGood,
   renderAuctionPage,
-  postGoodBid
+  postGoodBid,
+  rendSoldList
 }
