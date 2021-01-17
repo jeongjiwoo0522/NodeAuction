@@ -25,6 +25,6 @@ router.get("/join", isNotLoggedIn, renderJoinPageHandler);
 router.get("/good", isLoggedIn, renderGoodPageHandler);
 router.post("/good", isLoggedIn, upload.single("img"), auctionGoodHandler);
 router.get("/good/:id", isLoggedIn, renderAuctionPageHandler);
-router.post("/good/:id/bid", isLoggedIn, postGoodBidHandler);
+router.post("/good/:id/bid", isLoggedIn, indexController.postGoodBid);
 
 export default router;

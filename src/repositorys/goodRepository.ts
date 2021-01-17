@@ -17,10 +17,9 @@ class GoodRepository extends Repository<Good> {
     .getOne();
   }
 
-  public findAllBySoldId(soldId: number | null): Promise<Good[]> {
+  public findAllBySoldId(): Promise<Good[]> {
     return this
     .createQueryBuilder()
-    .where("good.soldId = :soldId", { soldId: soldId })
     .getMany();
   }
 
@@ -34,7 +33,7 @@ class GoodRepository extends Repository<Good> {
   }
 
   public findByIdIncludeUser(goodId: string): Promise<Good> {
-    return this.createQueryBuilder("good")
+    return this.createQueryBuilder("good")  
     .leftJoinAndSelect("good.owner", "Owner")
     .where("good.id = :id")
     .setParameter("id", +goodId)
@@ -43,7 +42,7 @@ class GoodRepository extends Repository<Good> {
 
   public findByIdWithAuction(goodId: string): Promise<Good> {
     return this.createQueryBuilder("good")
-    .leftJoinAndSelect("good.auction", "Auction")
+    .leftJoinAndSelect("good.auctions", "Auction")
     .where("good.id = :id")
     .setParameter("id", +goodId)
     .orderBy("Auction.bid", "DESC")

@@ -8,9 +8,12 @@ class AuctionRepository extends Repository<Auction> {
     return getCustomRepository(AuctionRepository);
   }
 
-  public findAllWithUserOrderbyBid(goodId: string) {
-    this.createQueryBuilder("auction")
-    .leftJoinAndSelect("auction.user", "User")
+  public findAllWithUserOrderbyBid(goodId: string): Promise<Auction[]> {
+    return this.createQueryBuilder("auction")
+    .leftJoin("auction.user", "User")
+    .select("auction.bid")
+    .addSelect("auction.msg")
+    .addSelect("User.nick")
     .where("auction.goodId = :id")
     .setParameter("id", +goodId)
     .orderBy("auction.bid", "ASC")
